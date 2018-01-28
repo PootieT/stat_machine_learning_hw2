@@ -71,8 +71,8 @@ class LogisticRegressor:
         # Compute the loss function for unregularized logistic regression        #
         # TODO: 1-2 lines of code expected                                       #
         ##########################################################################
-
-
+        h = utils.sigmoid(np.dot(X,theta))
+        J += 1.0 / m * np.sum(-1.0 * y * np.log(h) - (1.0 - y) * np.log(1 - h))
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
@@ -98,8 +98,8 @@ class LogisticRegressor:
         # regression                                                             #
         # TODO: 1 line of code expected                                          #
         ##########################################################################
-
-
+        h = utils.sigmoid(np.dot(X,theta))
+        grad += 1.0/m * np.dot(X.T, (h - y))
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
@@ -124,8 +124,7 @@ class LogisticRegressor:
         # Compute the predicted outputs for X                                     #
         # TODO: 1 line of code expected                                           #
         ###########################################################################
-
-
+        y_pred += utils.bin_features(np.dot(X,self.theta))
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
@@ -209,8 +208,9 @@ class RegLogisticRegressor:
         # Compute the loss function for regularized logistic regression          #
         # TODO: 1-2 lines of code expected                                       #
         ##########################################################################
-
-
+        h = utils.sigmoid(np.dot(X,theta))
+        J += 1.0 / m * np.sum(-1.0 * y * np.log(h) - (1.0 - y) * np.log(1 - h))
+        J += reg / (2.0 * m) * np.sum(theta[1:])
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
@@ -238,8 +238,9 @@ class RegLogisticRegressor:
         # regression                                                             #
         # TODO: 1 line of code expected                                          #
         ##########################################################################
-
-
+        h = utils.sigmoid(np.dot(X,theta))
+        grad += 1.0/m * np.dot(X.T, (h - y))
+        grad += reg / float(m) * np.concatenate((np.array([0]), theta[1:])) 
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
@@ -265,11 +266,9 @@ class RegLogisticRegressor:
         # TODO: 1 line of code expected                                           #
         #                                                                         #
         ###########################################################################
-
-
+        y_pred += utils.bin_features(np.dot(X,self.theta))
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
         return y_pred
-
 

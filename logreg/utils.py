@@ -14,7 +14,7 @@ import scipy.io
 def sigmoid (z):
     sig = np.zeros(z.shape)
     # Your code here
-    
+    sig += 1.0 / (1.0 + np.exp(-1*z))
     # End your code
 
     return sig
@@ -29,7 +29,7 @@ def sigmoid (z):
 def log_features(X):
     logf = np.zeros(X.shape)
     # Your code here
-    
+    logf += 1.0 + np.log(X)    
     # End your code
     return logf
 
@@ -55,7 +55,7 @@ def std_features(X):
 def bin_features(X):
     tX = np.zeros(X.shape)
     # your code here
-
+    tX += np.maximum(np.sign(X),np.zeros(X.shape))
     # end your code
     return tX
 
