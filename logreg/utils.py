@@ -29,7 +29,7 @@ def sigmoid (z):
 def log_features(X):
     logf = np.zeros(X.shape)
     # Your code here
-    logf += 1.0 + np.log(X)    
+    logf += np.log(1.0 + X)    
     # End your code
     return logf
 
@@ -90,8 +90,25 @@ def select_lambda_crossval(X,y,lambda_low,lambda_high,lambda_step,penalty):
 
     # Your code here
     # Implement the algorithm above.
+    best_acc = -1.0
+    for lam in np.arange(lambda_low, lambda_high + lambda_step, lambda_step):
+        ave_acc = 0
+        #Split data
+        kf = model_selection.KFold(n_splits=10)
+        for train, test in kf.split(X):
+            # Gets the data
+            X_train, X_test, y_train, y_test = X[train], X[test], y[train], y[test]
 
+            #Makes the fits the model
+            logreg = linear_model.LogisticRegression(C=1.0/lam,solver='liblinear',fit_intercept=False,penalty=penalty)
+            logreg.fit(X_train, y_train)
 
+            #Makes predictions and computes accuracy
+            ave_acc += np.sum([1 for i in range(len(y_test)) if y_test[i] == logreg.predict(X_test)[i] ]) / (float(len(y_test))*10)
+
+        if ave_acc > best_acc:
+            best_acc = ave_acc
+            best_lambda = lam
     # end your code
 
     return best_lambda
